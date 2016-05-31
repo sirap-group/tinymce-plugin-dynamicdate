@@ -1,6 +1,6 @@
 'use strict'
 
-// var $ = window.jQuery
+var $ = window.jQuery
 var DateTimeMenuItem = require('./DateTimeMenuItem')
 
 module.exports = DynamicdatePlugin
@@ -28,7 +28,14 @@ function DynamicdatePlugin (editor) {
     menu: dateTimeMenuItemList
   })
 
-  // $('body').on('menusController:mceMenuItemRendered', function (evt, menuId) {
-  //   console.log('menusController:mceMenuItemRendered', $('#' + menuId))
-  // })
+  $('body').on('menusController:mceMenuItemRendered', function (evt, menuId) {
+    if (menuId.indexOf(DateTimeMenuItem.prototype.PREFIX_ID) === 0) {
+      var $menuElement = $('#' + menuId)
+      $.each(dateTimeMenuItemList, function (i, item) {
+        if (item.id === $menuElement.attr('id')) {
+          item.setElement($menuElement)
+        }
+      })
+    }
+  })
 }
