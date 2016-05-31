@@ -5,7 +5,7 @@ module.exports = function (grunt) {
     standard: {
       options: { format: false },
       all: {
-        src: ['gruntfile.js', 'plugin.js']
+        src: ['gruntfile.js', 'src/**/*.js']
       }
     },
     browserify: {
