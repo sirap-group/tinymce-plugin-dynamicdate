@@ -8,13 +8,15 @@
  * Contributing: http://www.tinymce.com/contributing
  */
 
-/*global tinymce:true */
+var tinymce = window.tinymce
 
-tinymce.PluginManager.add('dynamicdate', function(editor) {
+tinymce.PluginManager.add('dynamicdate', DynamicdatePlugin)
+
+function DynamicdatePlugin (editor) {
 
   /**
    * @TODO
    * Write your plugin code here
    */
 
-});
+}
