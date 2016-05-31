@@ -30,5 +30,7 @@
     "url": "https://github.com/rbecheras/dynamicdate/issues"
   },
   "homepage": "https://github.com/rbecheras/dynamicdate#readme",
-  "dependencies": {}
+  "dependencies": {
+    "dateformat": "^1.0.12"
+  }
 }
