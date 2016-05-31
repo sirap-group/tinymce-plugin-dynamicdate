@@ -1,5 +1,6 @@
 'use strict'
 
+// var $ = window.jQuery
 var DateTimeMenuItem = require('./DateTimeMenuItem')
 
 module.exports = DynamicdatePlugin
@@ -24,4 +25,8 @@ function DynamicdatePlugin (editor) {
       new DateTimeMenuItem('yyyy')
     ]
   })
+
+  // $('body').on('menusController:mceMenuItemRendered', function (evt, menuId) {
+  //   console.log('menusController:mceMenuItemRendered', $('#' + menuId))
+  // })
 }
