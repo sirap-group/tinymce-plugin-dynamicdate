@@ -1,0 +1,22 @@
+{
+  "name": "dynamicdate",
+  "version": "0.1.0",
+  "authors": [
+    "Rémi Becheras <rbecheras@sirap.fr>"
+  ],
+  "description": "Plugin for tinymce wysiwyg HTML editor that allow to insert a dynamic date",
+  "main": "plugin.js",
+  "keywords": [
+    "tinymce",
+    "plugin",
+    "date"
+  ],
+  "license": "LGPL-2.1",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
+}
