@@ -1,5 +1,5 @@
 {
-  "name": "dynamicdate",
+  "name": "tinymce-plugin-dynamicdate",
   "version": "0.1.0",
   "authors": [
     "Rémi Becheras <rbecheras@sirap.fr>"
