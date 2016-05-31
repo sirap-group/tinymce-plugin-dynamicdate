@@ -16,23 +16,28 @@ function DateTimeMenuItem (mask) {
   this.text = this.format(mask)
   this.mask = mask
   this.title = mask
-  // this.setId()
+  this.setId()
 }
 
 /**
  * @method
  * @param {DOMElement} element
  */
-DateTimeMenuItem.prototype.setElement = function (element) {
-  this.node = element
+DateTimeMenuItem.prototype.setElement = function ($element) {
+  this.node = $element[0]
+  console.log(this.node)
 }
 
+DateTimeMenuItem.prototype.PREFIX_ID = 'dynamicdate-'
+
 DateTimeMenuItem.prototype.setId = function () {
-  this.prefixId = 'dynamicdate-'
-  this.id = (this.prefixId + this.mask)
+  var id = (this.PREFIX_ID + this.mask)
+    .replace(/ /gi, '-space-')
     .replace(/\//gi, '-slash-')
     .replace(/:/gi, '-dots-')
     .replace(/,/gi, '-comma-')
+    .replace(/'/gi, '-singlequote-')
+  this.id = id
 }
 
 DateTimeMenuItem.prototype.format = function (mask) {
