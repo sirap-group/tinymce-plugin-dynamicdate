@@ -3,9 +3,13 @@ module.exports = function (grunt) {
 
   grunt.initConfig({
     standard: {
+      options: { format: false },
       all: {
         src: ['gruntfile.js', 'plugin.js']
       }
+    },
+    browserify: {
+      dist: { src: 'index.js', dest: 'plugin.js' }
     },
     uglify: {
       dist: {
@@ -34,5 +38,5 @@ module.exports = function (grunt) {
     }
   })
 
-  grunt.registerTask('default', ['standard', 'uglify'])
+  grunt.registerTask('default', ['standard', 'browserify', 'uglify'])
 }
