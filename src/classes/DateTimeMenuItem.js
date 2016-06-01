@@ -40,9 +40,14 @@ DateTimeMenuItem.prototype.setElement = function ($element) {
   this.node = $element[0]
   $element.click(function () {
     var selectedNode = that.editor.selection.getNode()
-    var dateNode = $('<span contenteditable="false" data-dynamicdate="' + that.mask + '">' + that.format() + '</span>')
-    $(selectedNode).append(dateNode)
-    console.log('selectedNode', selectedNode)
+    // search the closest font family and size
+    var closestFontConfig = getClosestNodeWithFontConfig(selectedNode, 'Calibri', '12pt', that.editor)
+
+    $('<span>' + that.format() + '</span>')
+      .attr('contenteditable', false)
+      .attr('data-dynamicdate', that.mask)
+      .css(closestFontConfig)
+      .appendTo(selectedNode)
   })
 }
 
@@ -87,4 +92,90 @@ DateTimeMenuItem.prototype.format = function () {
     formatted = formatted.replace(enMonth, frMonth)
   }
   return formatted
+}
+
+/**
+ * @typedef FontConfig
+ * @type object
+ * @property {string} fontFamily The font-family name
+ * @property {string} fontSize The font-size with unit (ex: "12pt")
+ */
+
+/**
+ * Search the closest span element for wich font size and family is defined. Begins with previous, then next, and finally search through the ancestors and their children
+ * @function
+ * @param {DOMNode} the node from wich the search starts
+ * @returns {null|FontConfig}
+ */
+function getClosestNodeWithFontConfig (node, defaultFamily, defaultSize, editor) {
+  var $node = $(node)
+  var $currentNode
+  var found, $found
+
+  // is node ok itself ?
+  $currentNode = $node.filter(fontConfigFilter)
+  if ($currentNode.length) {
+    $found = $currentNode
+  } else {
+    var $allNodes = $('*', editor.getDoc())
+    var nodePosition = $allNodes.index(node)
+
+    var $allSpans = $('span', editor.getDoc()).filter(fontConfigFilter)
+    var allSpanPositions = $allSpans.map(function (i, el) {
+      return $allNodes.index(el)
+    })
+
+    var lowerPositions = []
+    var greaterPositions = []
+    $.each(allSpanPositions, function (i, documentPosition) {
+      if (documentPosition < nodePosition) {
+        lowerPositions.push(documentPosition)
+      } else if (documentPosition > nodePosition) {
+        greaterPositions.push(documentPosition)
+      }
+    })
+
+    var prevIndex = Math.max.apply(null, lowerPositions)
+    var nextIndex = Math.min.apply(null, greaterPositions)
+
+    if (!isNaN(prevIndex) && isFinite(prevIndex)) {
+      found = $allNodes[prevIndex]
+    } else if (!isNaN(nextIndex) && isFinite(nextIndex)) {
+      found = $allNodes[nextIndex]
+    }
+    if (found) {
+      $found = $(found)
+    }
+  }
+
+  if ($found) {
+    return getConfigFromElement($found)
+  } else {
+    return {
+      fontFamily: defaultFamily,
+      fontSize: defaultSize
+    }
+  }
+}
+
+/**
+ * A jquery filter to filter span elements having fontFamily and fontSize defined
+ * @function
+ * @returns {boolean} true|false
+ */
+function fontConfigFilter () {
+  return (this.style.fontFamily && this.style.fontSize)
+}
+
+/**
+ * A handy function to return a FontConfig type object from the element styles values
+ * @function
+ * @param {jQuery} $element A jQuery object from the element to lookup the font style rules
+ * @returns {FontConfig} the resulting fontConfig object
+ */
+function getConfigFromElement ($element) {
+  return {
+    fontFamily: $element[0].style.fontFamily,
+    fontSize: $element[0].style.fontSize
+  }
 }
