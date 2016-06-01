@@ -16,7 +16,7 @@ module.exports = DynamicdatePlugin
  * @param {tinymce.Editor} editor The current tinymce editor instance
  */
 function DynamicdatePlugin (editor) {
-  var dateTimeMenuItemList = createDateTimeMenuItemList()
+  var dateTimeMenuItemList = createDateTimeMenuItemList(editor)
 
   editor.addMenuItem('dynamicdate', createDynamicdateMenuOptions(dateTimeMenuItemList))
 
@@ -26,21 +26,22 @@ function DynamicdatePlugin (editor) {
 /**
  * Create the DateTimeMenuItem list
  * @function
+ * @param {tinymce.Editor} the current editor
  * @returns {Array<DateTimeMenuItem>} the list if DateTimeMenuItem instances
  */
-function createDateTimeMenuItemList () {
+function createDateTimeMenuItemList (editor) {
   return [
-    new DateTimeMenuItem('dd/mm/yyyy, HH\'h\'MM\'\'\'ss'),
-    new DateTimeMenuItem('dd/mm/yyyy, HH\'h\'MM'),
-    new DateTimeMenuItem('dd/mm/yyyy'),
-    new DateTimeMenuItem('HH\'h\'MM\'\'\'ss'),
-    new DateTimeMenuItem('HH\'h\'MM'),
-    new DateTimeMenuItem('dddd'),
-    new DateTimeMenuItem('dd'),
-    new DateTimeMenuItem('mm'),
-    new DateTimeMenuItem('mmmm'),
-    new DateTimeMenuItem('yy'),
-    new DateTimeMenuItem('yyyy')
+    new DateTimeMenuItem('dd/mm/yyyy, HH\'h\'MM\'\'\'ss', editor),
+    new DateTimeMenuItem('dd/mm/yyyy, HH\'h\'MM', editor),
+    new DateTimeMenuItem('dd/mm/yyyy', editor),
+    new DateTimeMenuItem('HH\'h\'MM\'\'\'ss', editor),
+    new DateTimeMenuItem('HH\'h\'MM', editor),
+    new DateTimeMenuItem('dddd', editor),
+    new DateTimeMenuItem('dd', editor),
+    new DateTimeMenuItem('mm', editor),
+    new DateTimeMenuItem('mmmm', editor),
+    new DateTimeMenuItem('yy', editor),
+    new DateTimeMenuItem('yyyy', editor)
   ]
 }
 

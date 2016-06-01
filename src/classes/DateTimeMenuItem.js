@@ -17,10 +17,10 @@ module.exports = DateTimeMenuItem
  * This class instances permit to manage the plugin menu items
  * @class
  * @param {string} mask
+ * @param {tinymce.Editor} editor The tinymce instance
  */
-function DateTimeMenuItem (mask) {
-  this.text = this.format(mask)
   this.mask = mask
+  this.editor = editor
   this.title = mask
   this.setId()
 }
@@ -32,7 +32,14 @@ function DateTimeMenuItem (mask) {
  * @returns {undefined}
  */
 DateTimeMenuItem.prototype.setElement = function ($element) {
+  var that = this
   this.node = $element[0]
+  $element.click(function () {
+    var selectedNode = that.editor.selection.getNode()
+    var dateNode = $('<span contenteditable="false" data-dynamicdate="' + that.mask + '">' + that.format() + '</span>')
+    $(selectedNode).append(dateNode)
+    console.log('selectedNode', selectedNode)
+  })
 }
 
 /**
