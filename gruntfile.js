@@ -1,3 +1,5 @@
+var shell = require('shelljs')
+
 module.exports = function (grunt) {
   require('load-grunt-tasks')(grunt)
 
@@ -36,6 +38,10 @@ module.exports = function (grunt) {
         regExp: false
       }
     }
+  })
+
+  grunt.registerTask('jsdoc', function () {
+    shell.exec('rm -rf jsdoc && npm run jsdoc')
   })
 
   grunt.registerTask('default', ['standard', 'browserify', 'uglify'])
