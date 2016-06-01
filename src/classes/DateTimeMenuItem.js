@@ -1,3 +1,8 @@
+/**
+ * @module DateTimeMenuItem
+ * @description This module exports the DateTimeMenuItem class
+ */
+
 'use strict'
 
 var dateformat = require('dateformat')
@@ -9,6 +14,7 @@ var months = { 'January': 'Janvier', 'February': 'Février', 'March': 'Mars', 'A
 module.exports = DateTimeMenuItem
 
 /**
+ * This class instances permit to manage the plugin menu items
  * @class
  * @param {string} mask
  */
@@ -20,16 +26,27 @@ function DateTimeMenuItem (mask) {
 }
 
 /**
+ * Set an menu item element to its object instance
  * @method
- * @param {DOMElement} element
+ * @param {DOMElement} element The element to set to its object instance (as a jquery set of one element)
+ * @returns {undefined}
  */
 DateTimeMenuItem.prototype.setElement = function ($element) {
   this.node = $element[0]
-  console.log(this.node)
 }
 
+/**
+ * Shared prefix for all menu item element's id
+ * @constant
+ * @static
+ */
 DateTimeMenuItem.prototype.PREFIX_ID = 'dynamicdate-'
 
+/**
+ * Computes and encodes the id for the menu item element, then set it in the id property
+ * @method
+ * @returns {undefined}
+ */
 DateTimeMenuItem.prototype.setId = function () {
   var id = (this.PREFIX_ID + this.mask)
     .replace(/ /gi, '-space-')
@@ -40,6 +57,12 @@ DateTimeMenuItem.prototype.setId = function () {
   this.id = id
 }
 
+/**
+ * Formats and translate in french a new date against the given date mask
+ * @method
+ * @param {string} mask The given mask
+ * @returns {string} the mask-formated now-date, in french
+ */
 DateTimeMenuItem.prototype.format = function (mask) {
   var now = new Date()
   var formatted = dateformat(now, mask)
