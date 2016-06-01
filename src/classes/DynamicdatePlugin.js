@@ -8,13 +8,7 @@ module.exports = DynamicdatePlugin
 function DynamicdatePlugin (editor) {
   var dateTimeMenuItemList = createDateTimeMenuItemList()
 
-  editor.addMenuItem('dynamicdate', {
-    context: 'insert',
-    text: 'Dynamic date',
-    type: 'menuitem',
-    id: 'menu-dynamicdate',
-    menu: dateTimeMenuItemList
-  })
+  editor.addMenuItem('dynamicdate', createDynamicdateMenuOptions(dateTimeMenuItemList))
 
   $('body').on('menusController:mceMenuItemRendered', function (evt, menuId) {
     if (menuId.indexOf(DateTimeMenuItem.prototype.PREFIX_ID) === 0) {
@@ -42,4 +36,14 @@ function createDateTimeMenuItemList () {
     new DateTimeMenuItem('yy'),
     new DateTimeMenuItem('yyyy')
   ]
+}
+
+function createDynamicdateMenuOptions (dateTimeMenuItemList) {
+  return {
+    context: 'insert',
+    text: 'Dynamic date',
+    type: 'menuitem',
+    id: 'menu-dynamicdate',
+    menu: dateTimeMenuItemList
+  }
 }
