@@ -55,7 +55,7 @@ DateTimeMenuItem.PREFIX_ID = 'dynamicdate-'
  * @returns {undefined}
  */
 DateTimeMenuItem.prototype.setId = function () {
-  var id = (this.PREFIX_ID + this.mask)
+  var id = (DateTimeMenuItem.PREFIX_ID + this.mask)
     .replace(/ /gi, '-space-')
     .replace(/\//gi, '-slash-')
     .replace(/:/gi, '-dots-')
