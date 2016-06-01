@@ -8,6 +8,10 @@
  * Contributing: http://www.tinymce.com/contributing
  */
 
+/**
+ * @module main
+ */
+
 'use strict'
 
 var tinymce = window.tinymce
