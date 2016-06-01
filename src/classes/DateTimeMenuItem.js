@@ -5,6 +5,8 @@
 
 'use strict'
 
+var $ = window.jQuery
+
 var dateformat = require('dateformat')
 
 var days = { 'Monday': 'Lundi', 'Tuesday': 'Mardi', 'Wednesday': 'Mercredi', 'Thursday': 'Jeudi', 'Friday': 'Vendredi', 'Saturday': 'Samedi', 'Sunday': 'Dimanche' }
@@ -19,8 +21,10 @@ module.exports = DateTimeMenuItem
  * @param {string} mask
  * @param {tinymce.Editor} editor The tinymce instance
  */
+function DateTimeMenuItem (mask, editor) {
   this.mask = mask
   this.editor = editor
+  this.text = this.format()
   this.title = mask
   this.setId()
 }
@@ -65,14 +69,13 @@ DateTimeMenuItem.prototype.setId = function () {
 }
 
 /**
- * Formats and translate in french a new date against the given date mask
+ * Formats and translate in french a new date against the date mask set to the instance
  * @method
- * @param {string} mask The given mask
  * @returns {string} the mask-formated now-date, in french
  */
-DateTimeMenuItem.prototype.format = function (mask) {
+DateTimeMenuItem.prototype.format = function () {
   var now = new Date()
-  var formatted = dateformat(now, mask)
+  var formatted = dateformat(now, this.mask)
   // replace english days by french days
   for (var enDay in days) {
     var frDay = days[enDay]
