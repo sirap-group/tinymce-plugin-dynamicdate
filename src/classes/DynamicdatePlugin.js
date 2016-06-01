@@ -10,16 +10,7 @@ function DynamicdatePlugin (editor) {
 
   editor.addMenuItem('dynamicdate', createDynamicdateMenuOptions(dateTimeMenuItemList))
 
-  $('body').on('menusController:mceMenuItemRendered', function (evt, menuId) {
-    if (menuId.indexOf(DateTimeMenuItem.prototype.PREFIX_ID) === 0) {
-      var $menuElement = $('#' + menuId)
-      $.each(dateTimeMenuItemList, function (i, item) {
-        if (item.id === $menuElement.attr('id')) {
-          item.setElement($menuElement)
-        }
-      })
-    }
-  })
+  $('body').on('menusController:mceMenuItemRendered', setMenuItemsElementsOnRender(dateTimeMenuItemList))
 }
 
 function createDateTimeMenuItemList () {
@@ -45,5 +36,18 @@ function createDynamicdateMenuOptions (dateTimeMenuItemList) {
     type: 'menuitem',
     id: 'menu-dynamicdate',
     menu: dateTimeMenuItemList
+  }
+}
+
+function setMenuItemsElementsOnRender (dateTimeMenuItemList) {
+  return function setMenuItemsElements (evt, menuId) {
+    if (menuId.indexOf(DateTimeMenuItem.prototype.PREFIX_ID) === 0) {
+      var $menuElement = $('#' + menuId)
+      $.each(dateTimeMenuItemList, function (i, item) {
+        if (item.id === $menuElement.attr('id')) {
+          item.setElement($menuElement)
+        }
+      })
+    }
   }
 }
