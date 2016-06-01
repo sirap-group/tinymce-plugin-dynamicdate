@@ -68,7 +68,7 @@ function createDynamicdateMenuOptions (dateTimeMenuItemList) {
  */
 function setMenuItemsElementsOnRender (dateTimeMenuItemList) {
   return function setMenuItemsElements (evt, menuId) {
-    if (menuId.indexOf(DateTimeMenuItem.prototype.PREFIX_ID) === 0) {
+    if (menuId.indexOf(DateTimeMenuItem.PREFIX_ID) === 0) {
       var $menuElement = $('#' + menuId)
       $.each(dateTimeMenuItemList, function (i, item) {
         if (item.id === $menuElement.attr('id')) {

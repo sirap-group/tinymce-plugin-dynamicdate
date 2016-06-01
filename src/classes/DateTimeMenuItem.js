@@ -40,7 +40,7 @@ DateTimeMenuItem.prototype.setElement = function ($element) {
  * @constant
  * @static
  */
-DateTimeMenuItem.prototype.PREFIX_ID = 'dynamicdate-'
+DateTimeMenuItem.PREFIX_ID = 'dynamicdate-'
 
 /**
  * Computes and encodes the id for the menu item element, then set it in the id property
