@@ -7,6 +7,11 @@
 
 var $ = window.jQuery
 
+// import underscore methods
+var _ = window._ || {}
+_.escape = _.escape || require('lodash.escape')
+_.unescape = _.unescape || require('lodash.unescape')
+
 var dateformat = require('dateformat')
 
 var days = { 'Monday': 'Lundi', 'Tuesday': 'Mardi', 'Wednesday': 'Mercredi', 'Thursday': 'Jeudi', 'Friday': 'Vendredi', 'Saturday': 'Samedi', 'Sunday': 'Dimanche' }
@@ -45,7 +50,7 @@ DateTimeMenuItem.prototype.setElement = function ($element) {
 
     $('<span>' + that.format() + '</span>')
       .attr('contenteditable', false)
-      .attr('data-dynamicdate', that.mask)
+      .attr('data-dynamicdate', _.escape(that.mask))
       .css(closestFontConfig)
       .appendTo(selectedNode)
   })
