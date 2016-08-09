@@ -41,19 +41,8 @@ function DateTimeMenuItem (mask, editor) {
  * @returns {undefined}
  */
 DateTimeMenuItem.prototype.setElement = function ($element) {
-  var that = this
   this.node = $element[0]
-  $element.click(function () {
-    var selectedNode = that.editor.selection.getNode()
-    // search the closest font family and size
-    var closestFontConfig = getClosestNodeWithFontConfig(selectedNode, 'Calibri', '12pt', that.editor)
-
-    $('<span>' + that.format() + '</span>')
-      .attr('contenteditable', false)
-      .attr('data-dynamicdate', _.escape(that.mask))
-      .css(closestFontConfig)
-      .appendTo(selectedNode)
-  })
+  $element.click(insertDateSpanOnClick(this))
 }
 
 /**
@@ -97,6 +86,34 @@ DateTimeMenuItem.prototype.format = function () {
     formatted = formatted.replace(enMonth, frMonth)
   }
   return formatted
+}
+
+/**
+ * Create the menu item click handler
+ * @method
+ * @private
+ * @param {DateTimeMenuItem} that The DateTimeMenuItem instance
+ * @return {function} The click event handler
+ * @see insertDateSpan
+ */
+function insertDateSpanOnClick (that) {
+  return insertDateSpan
+
+  /**
+  * Insert the date span HTML element
+  * @function
+  */
+  function insertDateSpan () {
+    var selectedNode = that.editor.selection.getNode()
+    // search the closest font family and size
+    var closestFontConfig = getClosestNodeWithFontConfig(selectedNode, 'Calibri', '12pt', that.editor)
+
+    $('<span>' + that.format() + '</span>')
+    .attr('contenteditable', false)
+    .attr('data-dynamicdate', _.escape(that.mask))
+    .css(closestFontConfig)
+    .appendTo(selectedNode)
+  }
 }
 
 /**
