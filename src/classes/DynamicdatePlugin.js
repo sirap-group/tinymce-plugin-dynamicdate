@@ -31,11 +31,11 @@ function DynamicdatePlugin (editor) {
  */
 function createDateTimeMenuItemList (editor) {
   return [
-    new DateTimeMenuItem('dd/mm/yyyy, HH\'h\'MM\'\'\'ss', editor),
-    new DateTimeMenuItem('dd/mm/yyyy, HH\'h\'MM', editor),
+    new DateTimeMenuItem("dd/mm/yyyy, HH'h'MM'''ss", editor),
+    new DateTimeMenuItem("dd/mm/yyyy, HH'h'MM", editor),
     new DateTimeMenuItem('dd/mm/yyyy', editor),
-    new DateTimeMenuItem('HH\'h\'MM\'\'\'ss', editor),
-    new DateTimeMenuItem('HH\'h\'MM', editor),
+    new DateTimeMenuItem("HH'h'MM'''ss", editor),
+    new DateTimeMenuItem("HH'h'MM", editor),
     new DateTimeMenuItem('dddd', editor),
     new DateTimeMenuItem('dd', editor),
     new DateTimeMenuItem('mm', editor),
