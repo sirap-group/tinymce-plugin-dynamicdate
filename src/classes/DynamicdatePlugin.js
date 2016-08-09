@@ -17,10 +17,10 @@ module.exports = DynamicdatePlugin
  */
 function DynamicdatePlugin (editor) {
   var dateTimeMenuItemList = createDateTimeMenuItemList(editor)
-
   editor.addMenuItem('dynamicdate', createDynamicdateMenuOptions(dateTimeMenuItemList))
 
-  $('body').on('menusController:mceMenuItemRendered', setMenuItemsElementsOnRender(dateTimeMenuItemList))
+  // Handle all `menusController:mceMenuItemRendered:<menuItem.id>` events
+  $.each(dateTimeMenuItemList, bindEachMenuItemToItsRenderedEventHandler)
 }
 
 /**
@@ -62,20 +62,18 @@ function createDynamicdateMenuOptions (dateTimeMenuItemList) {
 }
 
 /**
- * Set all menu items elements when each one is rendered
+ * Bind each menu item to its rendered event handler
  * @function
- * @param {Array<DateTimeMenuItem>} dateTimeMenuItemList The list of DateTimeMenuItem instances
- * @returns {function} the setMenuItemsElements() event handler
+ * @description
+ * Handle all `menusController:mceMenuItemRendered:<menuItem.id>` events
+ * @param {number} i Integer forEach itarator
+ * @param {DateTimeMenuItem} menuItem Menu item forEach iterator
  */
-function setMenuItemsElementsOnRender (dateTimeMenuItemList) {
-  return function setMenuItemsElements (evt, menuId) {
-    if (menuId.indexOf(DateTimeMenuItem.PREFIX_ID) === 0) {
-      var $menuElement = $('#' + menuId)
-      $.each(dateTimeMenuItemList, function (i, item) {
-        if (item.id === $menuElement.attr('id')) {
-          item.setElement($menuElement)
-        }
-      })
-    }
-  }
+function bindEachMenuItemToItsRenderedEventHandler (i, menuItem) {
+  var evtName = 'menusController:mceMenuItemRendered:' + menuItem.id
+  var $menuElement = null
+  $('body').on(evtName, function () {
+    $menuElement = $('#' + menuItem.id)
+    menuItem.setElement($menuElement)
+  })
 }
