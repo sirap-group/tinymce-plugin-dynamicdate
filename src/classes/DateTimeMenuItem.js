@@ -110,7 +110,7 @@ function insertDateSpanOnClick (that) {
 
     $('<span>' + that.format() + '</span>')
     .attr('contenteditable', false)
-    .attr('data-dynamicdate', _.escape(that.mask))
+    .attr('data-dynamicdate', that.mask)
     .css(closestFontConfig)
     .appendTo(selectedNode)
   }
