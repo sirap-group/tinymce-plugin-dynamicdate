@@ -1,7 +1,7 @@
 (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
 require('./src/main')
 
-},{"./src/main":9}],2:[function(require,module,exports){
+},{"./src/main":7}],2:[function(require,module,exports){
 /*
  * Date Format 1.2.3
  * (c) 2007-2009 Steven Levithan <stevenlevithan.com>
@@ -230,83 +230,6 @@ function kindOf(val) {
 })(this);
 
 },{}],3:[function(require,module,exports){
-/**
- * lodash 4.0.0 (Custom Build) <https://lodash.com/>
- * Build: `lodash modularize exports="npm" -o ./`
- * Copyright 2012-2016 The Dojo Foundation <http://dojofoundation.org/>
- * Based on Underscore.js 1.8.3 <http://underscorejs.org/LICENSE>
- * Copyright 2009-2016 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
- * Available under MIT license <https://lodash.com/license>
- */
-var toString = require('lodash.tostring');
-
-/** Used to match HTML entities and HTML characters. */
-var reUnescapedHtml = /[&<>"'`]/g,
-    reHasUnescapedHtml = RegExp(reUnescapedHtml.source);
-
-/** Used to map characters to HTML entities. */
-var htmlEscapes = {
-  '&': '&amp;',
-  '<': '&lt;',
-  '>': '&gt;',
-  '"': '&quot;',
-  "'": '&#39;',
-  '`': '&#96;'
-};
-
-/**
- * Used by `_.escape` to convert characters to HTML entities.
- *
- * @private
- * @param {string} chr The matched character to escape.
- * @returns {string} Returns the escaped character.
- */
-function escapeHtmlChar(chr) {
-  return htmlEscapes[chr];
-}
-
-/**
- * Converts the characters "&", "<", ">", '"', "'", and "\`" in `string` to
- * their corresponding HTML entities.
- *
- * **Note:** No other characters are escaped. To escape additional
- * characters use a third-party library like [_he_](https://mths.be/he).
- *
- * Though the ">" character is escaped for symmetry, characters like
- * ">" and "/" don't need escaping in HTML and have no special meaning
- * unless they're part of a tag or unquoted attribute value.
- * See [Mathias Bynens's article](https://mathiasbynens.be/notes/ambiguous-ampersands)
- * (under "semi-related fun fact") for more details.
- *
- * Backticks are escaped because in IE < 9, they can break out of
- * attribute values or HTML comments. See [#59](https://html5sec.org/#59),
- * [#102](https://html5sec.org/#102), [#108](https://html5sec.org/#108), and
- * [#133](https://html5sec.org/#133) of the [HTML5 Security Cheatsheet](https://html5sec.org/)
- * for more details.
- *
- * When working with HTML you should always [quote attribute values](http://wonko.com/post/html-escaping)
- * to reduce XSS vectors.
- *
- * @static
- * @memberOf _
- * @category String
- * @param {string} [string=''] The string to escape.
- * @returns {string} Returns the escaped string.
- * @example
- *
- * _.escape('fred, barney, & pebbles');
- * // => 'fred, barney, &amp; pebbles'
- */
-function escape(string) {
-  string = toString(string);
-  return (string && reHasUnescapedHtml.test(string))
-    ? string.replace(reUnescapedHtml, escapeHtmlChar)
-    : string;
-}
-
-module.exports = escape;
-
-},{"lodash.tostring":4}],4:[function(require,module,exports){
 (function (global){
 /**
  * lodash (Custom Build) <https://lodash.com/>
@@ -323,54 +246,50 @@ var INFINITY = 1 / 0;
 /** `Object#toString` result references. */
 var symbolTag = '[object Symbol]';
 
-/** Used to determine if values are of the language type `Object`. */
-var objectTypes = {
-  'function': true,
-  'object': true
+/** Used to match HTML entities and HTML characters. */
+var reUnescapedHtml = /[&<>"'`]/g,
+    reHasUnescapedHtml = RegExp(reUnescapedHtml.source);
+
+/** Used to map characters to HTML entities. */
+var htmlEscapes = {
+  '&': '&amp;',
+  '<': '&lt;',
+  '>': '&gt;',
+  '"': '&quot;',
+  "'": '&#39;',
+  '`': '&#96;'
 };
 
-/** Detect free variable `exports`. */
-var freeExports = (objectTypes[typeof exports] && exports && !exports.nodeType)
-  ? exports
-  : undefined;
-
-/** Detect free variable `module`. */
-var freeModule = (objectTypes[typeof module] && module && !module.nodeType)
-  ? module
-  : undefined;
-
 /** Detect free variable `global` from Node.js. */
-var freeGlobal = checkGlobal(freeExports && freeModule && typeof global == 'object' && global);
+var freeGlobal = typeof global == 'object' && global && global.Object === Object && global;
 
 /** Detect free variable `self`. */
-var freeSelf = checkGlobal(objectTypes[typeof self] && self);
+var freeSelf = typeof self == 'object' && self && self.Object === Object && self;
 
-/** Detect free variable `window`. */
-var freeWindow = checkGlobal(objectTypes[typeof window] && window);
-
-/** Detect `this` as the global object. */
-var thisGlobal = checkGlobal(objectTypes[typeof this] && this);
+/** Used as a reference to the global object. */
+var root = freeGlobal || freeSelf || Function('return this')();
 
 /**
- * Used as a reference to the global object.
- *
- * The `this` value is used if it's the global object to avoid Greasemonkey's
- * restricted `window` object, otherwise the `window` object is used.
- */
-var root = freeGlobal ||
-  ((freeWindow !== (thisGlobal && thisGlobal.window)) && freeWindow) ||
-    freeSelf || thisGlobal || Function('return this')();
-
-/**
- * Checks if `value` is a global object.
+ * The base implementation of `_.propertyOf` without support for deep paths.
  *
  * @private
- * @param {*} value The value to check.
- * @returns {null|Object} Returns `value` if it's a global object, else `null`.
+ * @param {Object} object The object to query.
+ * @returns {Function} Returns the new accessor function.
  */
-function checkGlobal(value) {
-  return (value && value.Object === Object) ? value : null;
+function basePropertyOf(object) {
+  return function(key) {
+    return object == null ? undefined : object[key];
+  };
 }
+
+/**
+ * Used by `_.escape` to convert characters to HTML entities.
+ *
+ * @private
+ * @param {string} chr The matched character to escape.
+ * @returns {string} Returns the escaped character.
+ */
+var escapeHtmlChar = basePropertyOf(htmlEscapes);
 
 /** Used for built-in method references. */
 var objectProto = Object.prototype;
@@ -445,8 +364,7 @@ function isObjectLike(value) {
  * @since 4.0.0
  * @category Lang
  * @param {*} value The value to check.
- * @returns {boolean} Returns `true` if `value` is correctly classified,
- *  else `false`.
+ * @returns {boolean} Returns `true` if `value` is a symbol, else `false`.
  * @example
  *
  * _.isSymbol(Symbol.iterator);
@@ -485,19 +403,66 @@ function toString(value) {
   return value == null ? '' : baseToString(value);
 }
 
-module.exports = toString;
+/**
+ * Converts the characters "&", "<", ">", '"', "'", and "\`" in `string` to
+ * their corresponding HTML entities.
+ *
+ * **Note:** No other characters are escaped. To escape additional
+ * characters use a third-party library like [_he_](https://mths.be/he).
+ *
+ * Though the ">" character is escaped for symmetry, characters like
+ * ">" and "/" don't need escaping in HTML and have no special meaning
+ * unless they're part of a tag or unquoted attribute value. See
+ * [Mathias Bynens's article](https://mathiasbynens.be/notes/ambiguous-ampersands)
+ * (under "semi-related fun fact") for more details.
+ *
+ * Backticks are escaped because in IE < 9, they can break out of
+ * attribute values or HTML comments. See [#59](https://html5sec.org/#59),
+ * [#102](https://html5sec.org/#102), [#108](https://html5sec.org/#108), and
+ * [#133](https://html5sec.org/#133) of the
+ * [HTML5 Security Cheatsheet](https://html5sec.org/) for more details.
+ *
+ * When working with HTML you should always
+ * [quote attribute values](http://wonko.com/post/html-escaping) to reduce
+ * XSS vectors.
+ *
+ * @static
+ * @since 0.1.0
+ * @memberOf _
+ * @category String
+ * @param {string} [string=''] The string to escape.
+ * @returns {string} Returns the escaped string.
+ * @example
+ *
+ * _.escape('fred, barney, & pebbles');
+ * // => 'fred, barney, &amp; pebbles'
+ */
+function escape(string) {
+  string = toString(string);
+  return (string && reHasUnescapedHtml.test(string))
+    ? string.replace(reUnescapedHtml, escapeHtmlChar)
+    : string;
+}
+
+module.exports = escape;
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{}],5:[function(require,module,exports){
+},{}],4:[function(require,module,exports){
+(function (global){
 /**
- * lodash 4.0.0 (Custom Build) <https://lodash.com/>
+ * lodash (Custom Build) <https://lodash.com/>
  * Build: `lodash modularize exports="npm" -o ./`
- * Copyright 2012-2016 The Dojo Foundation <http://dojofoundation.org/>
+ * Copyright jQuery Foundation and other contributors <https://jquery.org/>
+ * Released under MIT license <https://lodash.com/license>
  * Based on Underscore.js 1.8.3 <http://underscorejs.org/LICENSE>
- * Copyright 2009-2016 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
- * Available under MIT license <https://lodash.com/license>
+ * Copyright Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
  */
-var toString = require('lodash.tostring');
+
+/** Used as references for various `Number` constants. */
+var INFINITY = 1 / 0;
+
+/** `Object#toString` result references. */
+var symbolTag = '[object Symbol]';
 
 /** Used to match HTML entities and HTML characters. */
 var reEscapedHtml = /&(?:amp|lt|gt|quot|#39|#96);/g,
@@ -513,6 +478,28 @@ var htmlUnescapes = {
   '&#96;': '`'
 };
 
+/** Detect free variable `global` from Node.js. */
+var freeGlobal = typeof global == 'object' && global && global.Object === Object && global;
+
+/** Detect free variable `self`. */
+var freeSelf = typeof self == 'object' && self && self.Object === Object && self;
+
+/** Used as a reference to the global object. */
+var root = freeGlobal || freeSelf || Function('return this')();
+
+/**
+ * The base implementation of `_.propertyOf` without support for deep paths.
+ *
+ * @private
+ * @param {Object} object The object to query.
+ * @returns {Function} Returns the new accessor function.
+ */
+function basePropertyOf(object) {
+  return function(key) {
+    return object == null ? undefined : object[key];
+  };
+}
+
 /**
  * Used by `_.unescape` to convert HTML entities to characters.
  *
@@ -520,20 +507,131 @@ var htmlUnescapes = {
  * @param {string} chr The matched character to unescape.
  * @returns {string} Returns the unescaped character.
  */
-function unescapeHtmlChar(chr) {
-  return htmlUnescapes[chr];
+var unescapeHtmlChar = basePropertyOf(htmlUnescapes);
+
+/** Used for built-in method references. */
+var objectProto = Object.prototype;
+
+/**
+ * Used to resolve the
+ * [`toStringTag`](http://ecma-international.org/ecma-262/6.0/#sec-object.prototype.tostring)
+ * of values.
+ */
+var objectToString = objectProto.toString;
+
+/** Built-in value references. */
+var Symbol = root.Symbol;
+
+/** Used to convert symbols to primitives and strings. */
+var symbolProto = Symbol ? Symbol.prototype : undefined,
+    symbolToString = symbolProto ? symbolProto.toString : undefined;
+
+/**
+ * The base implementation of `_.toString` which doesn't convert nullish
+ * values to empty strings.
+ *
+ * @private
+ * @param {*} value The value to process.
+ * @returns {string} Returns the string.
+ */
+function baseToString(value) {
+  // Exit early for strings to avoid a performance hit in some environments.
+  if (typeof value == 'string') {
+    return value;
+  }
+  if (isSymbol(value)) {
+    return symbolToString ? symbolToString.call(value) : '';
+  }
+  var result = (value + '');
+  return (result == '0' && (1 / value) == -INFINITY) ? '-0' : result;
+}
+
+/**
+ * Checks if `value` is object-like. A value is object-like if it's not `null`
+ * and has a `typeof` result of "object".
+ *
+ * @static
+ * @memberOf _
+ * @since 4.0.0
+ * @category Lang
+ * @param {*} value The value to check.
+ * @returns {boolean} Returns `true` if `value` is object-like, else `false`.
+ * @example
+ *
+ * _.isObjectLike({});
+ * // => true
+ *
+ * _.isObjectLike([1, 2, 3]);
+ * // => true
+ *
+ * _.isObjectLike(_.noop);
+ * // => false
+ *
+ * _.isObjectLike(null);
+ * // => false
+ */
+function isObjectLike(value) {
+  return !!value && typeof value == 'object';
+}
+
+/**
+ * Checks if `value` is classified as a `Symbol` primitive or object.
+ *
+ * @static
+ * @memberOf _
+ * @since 4.0.0
+ * @category Lang
+ * @param {*} value The value to check.
+ * @returns {boolean} Returns `true` if `value` is a symbol, else `false`.
+ * @example
+ *
+ * _.isSymbol(Symbol.iterator);
+ * // => true
+ *
+ * _.isSymbol('abc');
+ * // => false
+ */
+function isSymbol(value) {
+  return typeof value == 'symbol' ||
+    (isObjectLike(value) && objectToString.call(value) == symbolTag);
+}
+
+/**
+ * Converts `value` to a string. An empty string is returned for `null`
+ * and `undefined` values. The sign of `-0` is preserved.
+ *
+ * @static
+ * @memberOf _
+ * @since 4.0.0
+ * @category Lang
+ * @param {*} value The value to process.
+ * @returns {string} Returns the string.
+ * @example
+ *
+ * _.toString(null);
+ * // => ''
+ *
+ * _.toString(-0);
+ * // => '-0'
+ *
+ * _.toString([1, 2, 3]);
+ * // => '1,2,3'
+ */
+function toString(value) {
+  return value == null ? '' : baseToString(value);
 }
 
 /**
  * The inverse of `_.escape`; this method converts the HTML entities
- * `&amp;`, `&lt;`, `&gt;`, `&quot;`, `&#39;`, and `&#96;` in `string` to their
- * corresponding characters.
+ * `&amp;`, `&lt;`, `&gt;`, `&quot;`, `&#39;`, and `&#96;` in `string` to
+ * their corresponding characters.
  *
- * **Note:** No other HTML entities are unescaped. To unescape additional HTML
- * entities use a third-party library like [_he_](https://mths.be/he).
+ * **Note:** No other HTML entities are unescaped. To unescape additional
+ * HTML entities use a third-party library like [_he_](https://mths.be/he).
  *
  * @static
  * @memberOf _
+ * @since 0.6.0
  * @category String
  * @param {string} [string=''] The string to unescape.
  * @returns {string} Returns the unescaped string.
@@ -551,9 +649,8 @@ function unescape(string) {
 
 module.exports = unescape;
 
-},{"lodash.tostring":6}],6:[function(require,module,exports){
-arguments[4][4][0].apply(exports,arguments)
-},{"dup":4}],7:[function(require,module,exports){
+}).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
+},{}],5:[function(require,module,exports){
 /**
  * @module DateTimeMenuItem
  * @description This module exports the DateTimeMenuItem class
@@ -598,7 +695,7 @@ function DateTimeMenuItem (mask, editor) {
  */
 DateTimeMenuItem.prototype.setElement = function ($element) {
   this.node = $element[0]
-  $element.click(insertDateSpanOnClick(this))
+  $element.click(insertDateSpan.bind(this))
 }
 
 /**
@@ -645,31 +742,24 @@ DateTimeMenuItem.prototype.format = function () {
 }
 
 /**
- * Create the menu item click handler
+ * Insert the date span HTML element
  * @method
  * @private
- * @param {DateTimeMenuItem} that The DateTimeMenuItem instance
- * @return {function} The click event handler
- * @see insertDateSpan
+ * @return {undefined}
  */
-function insertDateSpanOnClick (that) {
-  return insertDateSpan
+function insertDateSpan () {
+  var that = this
+  var selectedNode = this.editor.selection.getNode()
+  // search the closest font family and size
+  var closestFontConfig = getClosestNodeWithFontConfig(selectedNode, 'Calibri', '12pt', this.editor)
 
-  /**
-  * Insert the date span HTML element
-  * @function
-  */
-  function insertDateSpan () {
-    var selectedNode = that.editor.selection.getNode()
-    // search the closest font family and size
-    var closestFontConfig = getClosestNodeWithFontConfig(selectedNode, 'Calibri', '12pt', that.editor)
-
+  this.editor.undoManager.transact(function () {
     $('<span>' + that.format() + '</span>')
     .attr('contenteditable', false)
     .attr('data-dynamicdate', that.mask)
     .css(closestFontConfig)
     .appendTo(selectedNode)
-  }
+  })
 }
 
 /**
@@ -758,7 +848,7 @@ function getConfigFromElement ($element) {
   }
 }
 
-},{"dateformat":2,"lodash.escape":3,"lodash.unescape":5}],8:[function(require,module,exports){
+},{"dateformat":2,"lodash.escape":3,"lodash.unescape":4}],6:[function(require,module,exports){
 /**
  * @module
  * @description This module exports the DynamicdatePlugin class
@@ -792,18 +882,20 @@ function DynamicdatePlugin (editor) {
  */
 function createDateTimeMenuItemList (editor) {
   return [
-    new DateTimeMenuItem("dd/mm/yyyy, HH'h'MM'''ss", editor),
-    new DateTimeMenuItem("dd/mm/yyyy, HH'h'''MM", editor),
-    new DateTimeMenuItem('dd/mm/yyyy', editor),
-    new DateTimeMenuItem("HH'h'MM'''ss", editor),
-    new DateTimeMenuItem("HH'h'MM", editor),
-    new DateTimeMenuItem('dddd', editor),
-    new DateTimeMenuItem('dd', editor),
-    new DateTimeMenuItem('mm', editor),
-    new DateTimeMenuItem('mmmm', editor),
-    new DateTimeMenuItem('yy', editor),
-    new DateTimeMenuItem('yyyy', editor)
-  ]
+    "dd/mm/yyyy, HH'h'MM'''ss",   // 31/12/2016, 23h59'59
+    "dd/mm/yyyy, HH'h'''MM",      // 31/12/2016, 23h59
+    'dd/mm/yyyy',                 // 31/12/2016
+    "HH'h'MM'''ss",               // 23h59'59
+    "HH'h'MM",                    // 23h59
+    'dddd',                       // Lundi
+    'dd',                         // 31
+    'mm',                         // 12
+    'mmmm',                       // Décembre
+    'yy',                         // 16
+    'yyyy'                        // 2016
+  ].map(function (item) {
+    return new DateTimeMenuItem(item, editor)
+  })
 }
 
 /**
@@ -839,7 +931,7 @@ function bindEachMenuItemToItsRenderedEventHandler (i, menuItem) {
   })
 }
 
-},{"./DateTimeMenuItem":7}],9:[function(require,module,exports){
+},{"./DateTimeMenuItem":5}],7:[function(require,module,exports){
 /**
  * plugin.js
  *
@@ -861,4 +953,4 @@ var DynamicdatePlugin = require('./classes/DynamicdatePlugin')
 
 tinymce.PluginManager.add('dynamicdate', DynamicdatePlugin)
 
-},{"./classes/DynamicdatePlugin":8}]},{},[1]);
+},{"./classes/DynamicdatePlugin":6}]},{},[1]);
