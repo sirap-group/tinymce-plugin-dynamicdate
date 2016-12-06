@@ -42,7 +42,7 @@ function DateTimeMenuItem (mask, editor) {
  */
 DateTimeMenuItem.prototype.setElement = function ($element) {
   this.node = $element[0]
-  $element.click(insertDateSpanOnClick(this))
+  $element.click(insertDateSpan.bind(this))
 }
 
 /**
@@ -89,31 +89,24 @@ DateTimeMenuItem.prototype.format = function () {
 }
 
 /**
- * Create the menu item click handler
+ * Insert the date span HTML element
  * @method
  * @private
- * @param {DateTimeMenuItem} that The DateTimeMenuItem instance
- * @return {function} The click event handler
- * @see insertDateSpan
+ * @return {undefined}
  */
-function insertDateSpanOnClick (that) {
-  return insertDateSpan
+function insertDateSpan () {
+  var that = this
+  var selectedNode = this.editor.selection.getNode()
+  // search the closest font family and size
+  var closestFontConfig = getClosestNodeWithFontConfig(selectedNode, 'Calibri', '12pt', this.editor)
 
-  /**
-  * Insert the date span HTML element
-  * @function
-  */
-  function insertDateSpan () {
-    var selectedNode = that.editor.selection.getNode()
-    // search the closest font family and size
-    var closestFontConfig = getClosestNodeWithFontConfig(selectedNode, 'Calibri', '12pt', that.editor)
-
+  this.editor.undoManager.transact(function () {
     $('<span>' + that.format() + '</span>')
     .attr('contenteditable', false)
     .attr('data-dynamicdate', that.mask)
     .css(closestFontConfig)
     .appendTo(selectedNode)
-  }
+  })
 }
 
 /**
