@@ -12,7 +12,7 @@ var _ = window._ || {}
 _.escape = _.escape || require('lodash.escape')
 _.unescape = _.unescape || require('lodash.unescape')
 
-var dateformat = require('dateformat')
+var moment = require('moment')
 
 var days = { 'Monday': 'Lundi', 'Tuesday': 'Mardi', 'Wednesday': 'Mercredi', 'Thursday': 'Jeudi', 'Friday': 'Vendredi', 'Saturday': 'Samedi', 'Sunday': 'Dimanche' }
 
@@ -44,10 +44,12 @@ DateTimeMenuItem.prototype.setElement = function ($element) {
   this.node = $element[0]
 
   // ensure there isnt any click handler before binding it (see #7)
-  var listeners = $._data($(this.node).get(0), 'events')
+  var listeners
+  try {
+    listeners = $._data($(this.node).get(0), 'events')
+  } catch (e) {}
   if (!listeners || !listeners.click || !listeners.click.length) {
     $element.click(insertDateSpan.bind(this))
-    listeners = $._data($(this.node).get(0), 'events')
   }
 }
 
@@ -70,6 +72,8 @@ DateTimeMenuItem.prototype.setId = function () {
     .replace(/:/gi, '-dots-')
     .replace(/,/gi, '-comma-')
     .replace(/'/gi, '-singlequote-')
+    .replace(/\[/gi, '-left-square-bracket-')
+    .replace(/\]/gi, '-right-square-bracket-')
   this.id = this.editor.id.concat('-', id)
 }
 
@@ -80,7 +84,7 @@ DateTimeMenuItem.prototype.setId = function () {
  */
 DateTimeMenuItem.prototype.format = function () {
   var now = new Date()
-  var formatted = dateformat(now, this.mask)
+  var formatted = moment(now).format(this.mask)
   // replace english days by french days
   for (var enDay in days) {
     var frDay = days[enDay]
