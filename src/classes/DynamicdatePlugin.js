@@ -31,17 +31,17 @@ function DynamicdatePlugin (editor) {
  */
 function createDateTimeMenuItemList (editor) {
   return [
-    "dd/mm/yyyy, HH'h'MM'''ss",   // 31/12/2016, 23h59'59
-    "dd/mm/yyyy, HH'h'''MM",      // 31/12/2016, 23h59
-    'dd/mm/yyyy',                 // 31/12/2016
-    "HH'h'MM'''ss",               // 23h59'59
-    "HH'h'MM",                    // 23h59
+    "DD/MM/YYYY, HH[h]mm[']ss",   // 31/12/2016, 23h59'59
+    'DD/MM/YYYY, HH[h]mm',      // 31/12/2016, 23h59
+    'DD/MM/YYYY',                 // 31/12/2016
+    "HH[h]mm[']ss",               // 23h59'59
+    'HH[h]mm',                    // 23h59
     'dddd',                       // Lundi
-    'dd',                         // 31
-    'mm',                         // 12
-    'mmmm',                       // Décembre
-    'yy',                         // 16
-    'yyyy'                        // 2016
+    'DD',                         // 31
+    'MM',                         // 12
+    'MMMM',                       // Décembre
+    'YY',                         // 16
+    'YYYY'                        // 2016
   ].map(function (item) {
     return new DateTimeMenuItem(item, editor)
   })
