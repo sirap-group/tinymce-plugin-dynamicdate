@@ -42,7 +42,13 @@ function DateTimeMenuItem (mask, editor) {
  */
 DateTimeMenuItem.prototype.setElement = function ($element) {
   this.node = $element[0]
-  $element.click(insertDateSpan.bind(this))
+
+  // ensure there isnt any click handler before binding it (see #7)
+  var listeners = $._data($(this.node).get(0), 'events')
+  if (!listeners || !listeners.click || !listeners.click.length) {
+    $element.click(insertDateSpan.bind(this))
+    listeners = $._data($(this.node).get(0), 'events')
+  }
 }
 
 /**
@@ -64,7 +70,7 @@ DateTimeMenuItem.prototype.setId = function () {
     .replace(/:/gi, '-dots-')
     .replace(/,/gi, '-comma-')
     .replace(/'/gi, '-singlequote-')
-  this.id = id
+  this.id = this.editor.id.concat('-', id)
 }
 
 /**
