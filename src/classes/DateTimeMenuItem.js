@@ -64,7 +64,7 @@ DateTimeMenuItem.prototype.setId = function () {
     .replace(/:/gi, '-dots-')
     .replace(/,/gi, '-comma-')
     .replace(/'/gi, '-singlequote-')
-  this.id = id
+  this.id = this.editor.id.concat('-', id)
 }
 
 /**
